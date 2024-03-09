@@ -1,7 +1,7 @@
 package model;
 
 public class Monomial implements Cloneable{
-    private Number coefficient;
+    private Double coefficient;
     private Integer degree;
 
     public Monomial(Double coefficient, Integer degree) {
@@ -13,7 +13,7 @@ public class Monomial implements Cloneable{
         return coefficient;
     }
 
-    public void setCoefficient(Number coefficient) {
+    public void setCoefficient(Double coefficient) {
         this.coefficient = coefficient;
     }
 
