@@ -1,7 +1,7 @@
 package model;
 
 public class Monomial implements Cloneable{
-    private Double coefficient;
+    private Number coefficient;
     private Integer degree;
 
     public Monomial(Double coefficient, Integer degree) {
