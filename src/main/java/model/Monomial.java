@@ -45,4 +45,9 @@ public class Monomial implements Cloneable{
         Monomial monomial = (Monomial) o;
         return Objects.equals(coefficient, monomial.coefficient) && Objects.equals(degree, monomial.degree);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(coefficient, degree);
+    }
 }

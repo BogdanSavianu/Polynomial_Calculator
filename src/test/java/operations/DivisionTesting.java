@@ -1,5 +1,6 @@
-package Operations;
+package operations;
 
+import logic.DivisionByZero;
 import logic.Operations;
 import model.Monomial;
 import model.Polynomial;
@@ -7,12 +8,14 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import single_point_access.SinglePointAccess;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DivisionTesting {
     private static Integer nrTests = 0;
@@ -37,7 +40,7 @@ public class DivisionTesting {
     }
 
     @Test
-    public void division1() {
+    public void division1() throws DivisionByZero {
         Polynomial pol1 = new Polynomial();
         Monomial m1 = new Monomial(3.0, 4);
         Monomial m2 = new Monomial(6.0, 3);
@@ -83,7 +86,7 @@ public class DivisionTesting {
     }
 
     @Test
-    public void division2() {
+    public void division2() throws DivisionByZero {
         Monomial mon4 = new Monomial(1.0,3);
         Monomial mon5 = new Monomial(-2.0,2);
         Monomial mon6 = new Monomial(6.0,1);
@@ -119,6 +122,47 @@ public class DivisionTesting {
         expectedResult.add(remainder);
 
         assertEquals(expectedResult, result);
+        nrTestsPassed++;
+    }
+    @Test
+    public void division3() throws DivisionByZero {
+        Monomial mon4 = new Monomial(54.0,1);
+        Monomial mon5 = new Monomial(54.0,1);
+
+        Polynomial pol1 = new Polynomial();
+        Polynomial pol2 = new Polynomial();
+        pol1.addMonomial(mon4);
+        pol2.addMonomial(mon5);
+        List<Polynomial> result = op.divide(pol1, pol2);
+
+        Polynomial quotient = new Polynomial();
+        Monomial q1 = new Monomial(1.0, 0);
+        quotient.addMonomial(q1);
+
+        Polynomial remainder = new Polynomial();
+
+        List<Polynomial> expectedResult = new ArrayList<>();
+        expectedResult.add(quotient);
+        expectedResult.add(remainder);
+
+        assertEquals(expectedResult, result);
+        nrTestsPassed++;
+    }
+    @Test(expected = DivisionByZero.class)
+    public void division4() throws DivisionByZero {
+        Monomial mon4 = new Monomial(54.0,1);
+
+        Polynomial pol1 = new Polynomial();
+        Polynomial pol2 = new Polynomial();
+        pol1.addMonomial(mon4);
+        List<Polynomial> result = op.divide(pol1, pol2);
+
+        Polynomial quotient = new Polynomial();
+        Polynomial remainder = new Polynomial();
+
+        List<Polynomial> expectedResult = new ArrayList<>();
+        expectedResult.add(quotient);
+        expectedResult.add(remainder);
         nrTestsPassed++;
     }
 }

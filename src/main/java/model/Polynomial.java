@@ -49,4 +49,9 @@ public class Polynomial implements Cloneable{
         Polynomial that = (Polynomial) o;
         return Objects.equals(monomials, that.monomials);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(monomials);
+    }
 }

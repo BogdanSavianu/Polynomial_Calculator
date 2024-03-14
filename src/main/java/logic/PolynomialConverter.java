@@ -7,31 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PolynomialConverter {
 
     public static Polynomial parsePolynomial(String expression) {
-        Map<Integer, Monomial> polynomialMap = new TreeMap<>();
+        TreeMap<Integer, Monomial> polynomialMap = new TreeMap<>();
         Polynomial result = new Polynomial();
-        // Split the expression into monomials
+
         String[] monomials = expression.split("\\s*(?=[+-])");
 
         for (String monomial : monomials) {
-            // Parse the monomial
             Monomial parsedMonomial = parseMonomial(monomial);
-            // Add the parsed monomial to the polynomial map
             polynomialMap.put(parsedMonomial.getDegree(), parsedMonomial);
         }
 
+
+        ///TODO check if the following is actually necessary
         List<Integer> toDelete = new ArrayList<>();
         for(Map.Entry<Integer,Monomial> it: polynomialMap.entrySet())
             if(it.getValue().getCoefficient().doubleValue() == 0.0)
                 toDelete.add(it.getKey());
         for(Integer it: toDelete)
             polynomialMap.remove(it);
-        result.setMonomials((TreeMap) polynomialMap);
+        result.setMonomials(polynomialMap);
         return result;
     }
 
@@ -41,9 +39,12 @@ public class PolynomialConverter {
 
         monomial = monomial.replaceAll("\\s+", "");
 
+
+        ///TODO maybe without this, the previous todo can be deleted
         if (monomial.isEmpty()) {
             return new Monomial(0.0, 0);
         }
+
         char sign = '+';
         if (monomial.charAt(0) == '+' || monomial.charAt(0) == '-') {
             sign = monomial.charAt(0);
@@ -84,7 +85,7 @@ public class PolynomialConverter {
                 if(it.getValue().getCoefficient().doubleValue() < 0.0)
                     polynomial.append("- ");
                 else polynomial.append("+ ");
-                    polynomial.append(String.valueOf(it.getValue().getCoefficient()));
+                polynomial.append(String.valueOf(it.getValue().getCoefficient()));
             }
             if(it.getKey() == 1 )
                 polynomial.append("x");

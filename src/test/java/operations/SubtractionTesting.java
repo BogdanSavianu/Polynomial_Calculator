@@ -1,4 +1,4 @@
-package Operations;
+package operations;
 
 import logic.Operations;
 import model.Monomial;
