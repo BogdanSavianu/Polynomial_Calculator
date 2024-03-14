@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Monomial implements Cloneable{
     private Number coefficient;
     private Integer degree;
@@ -34,5 +36,13 @@ public class Monomial implements Cloneable{
     @Override
     public String toString() {
         return coefficient+"* x^" + degree+" ";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Monomial monomial = (Monomial) o;
+        return Objects.equals(coefficient, monomial.coefficient) && Objects.equals(degree, monomial.degree);
     }
 }

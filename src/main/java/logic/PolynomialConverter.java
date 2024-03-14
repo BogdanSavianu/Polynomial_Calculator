@@ -1,50 +1,20 @@
 package logic;
 
 import model.Monomial;
+import model.Polynomial;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PolynomialConverter {
-    private Double extractCoef(String term) {
-        String coefficientStr = term.trim().replaceAll("X(\\^[+-]?[0-9]+)?", "").trim();
 
-        if (coefficientStr.isEmpty() || coefficientStr.equals("+")) {
-            return 1.0; // Default coefficient if empty or "+"
-        } else if (coefficientStr.equals("-")) {
-            return -1.0; // Handle "-" as -1.0
-        }
-
-        try {
-            return Double.parseDouble(coefficientStr);
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException("Invalid coefficient format: " + coefficientStr);
-        }
-    }
-
-
-
-    private Integer extractDeg(String term) {
-        // Updated regex to capture the exponent part correctly
-        String degStr = term.trim().replaceAll(".*X(\\^([+-]?[0-9]+))?", "$2");
-
-        if (degStr.isEmpty() || degStr.equals("-") || degStr.equals("+")) {
-            return 1; // Default degree if empty, "-" or "+"
-        }
-
-        try {
-            return Integer.parseInt(degStr);
-        } catch (NumberFormatException e) {
-            // Handle the case where the exponent string is not a valid number
-            throw new NumberFormatException("Invalid degree format: " + degStr);
-        }
-    }
-
-    public static Map<Integer, Monomial> parsePolynomial(String expression) {
+    public static Polynomial parsePolynomial(String expression) {
         Map<Integer, Monomial> polynomialMap = new TreeMap<>();
-
+        Polynomial result = new Polynomial();
         // Split the expression into monomials
         String[] monomials = expression.split("\\s*(?=[+-])");
 
@@ -55,7 +25,14 @@ public class PolynomialConverter {
             polynomialMap.put(parsedMonomial.getDegree(), parsedMonomial);
         }
 
-        return polynomialMap;
+        List<Integer> toDelete = new ArrayList<>();
+        for(Map.Entry<Integer,Monomial> it: polynomialMap.entrySet())
+            if(it.getValue().getCoefficient().doubleValue() == 0.0)
+                toDelete.add(it.getKey());
+        for(Integer it: toDelete)
+            polynomialMap.remove(it);
+        result.setMonomials((TreeMap) polynomialMap);
+        return result;
     }
 
     public static Monomial parseMonomial(String monomial) {
@@ -96,8 +73,27 @@ public class PolynomialConverter {
                 degree = Integer.parseInt(term.substring(1));
             }
         }
-
         return new Monomial(coefficient, degree);
+    }
+
+    public static String printPolynomial(Polynomial pol){
+        StringBuilder polynomial = new StringBuilder();
+
+        for(Map.Entry<Integer, Monomial> it: pol.getMonomials().descendingMap().entrySet()){
+            if(it.getValue().getCoefficient().doubleValue() != 0){
+                if(it.getValue().getCoefficient().doubleValue() < 0.0)
+                    polynomial.append("- ");
+                else polynomial.append("+ ");
+                    polynomial.append(String.valueOf(it.getValue().getCoefficient()));
+            }
+            if(it.getKey() == 1 )
+                polynomial.append("x");
+            else if(it.getKey() > 1) {
+                polynomial.append("x^");
+                polynomial.append(String.valueOf(it.getKey()));
+            }
+        }
+        return polynomial.toString();
     }
 
 }

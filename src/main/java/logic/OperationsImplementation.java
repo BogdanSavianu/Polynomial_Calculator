@@ -3,6 +3,8 @@ package logic;
 import model.Monomial;
 import model.Polynomial;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +22,11 @@ public class OperationsImplementation implements Operations {
             throw new RuntimeException(e);
         }
         for(Map.Entry<Integer, Monomial> it: pol1.getMonomials().entrySet())
-            if(it != null)
+            if(it != null) {
                 result.addMonomial(it.getValue());
+                if(result.getMonomials().get(it.getKey()).getCoefficient().doubleValue() == 0.0)
+                    result.getMonomials().remove(it.getKey());
+            }
         return result;
     }
 
@@ -101,7 +106,7 @@ public class OperationsImplementation implements Operations {
     public Polynomial differentiate(Polynomial pol) {
         Polynomial result = new Polynomial();
         for(Map.Entry<Integer,Monomial> it: pol.getMonomials().entrySet()) {
-            if(it != null) {
+            if(it != null && it.getKey()!=0) {
                 Monomial differentiated = new Monomial(it.getValue().getDegree().doubleValue() * (Double) it.getValue().getCoefficient(), it.getKey() - 1);
                 result.getMonomials().put(differentiated.getDegree(), differentiated);
             }
@@ -115,7 +120,10 @@ public class OperationsImplementation implements Operations {
 
         for(Map.Entry<Integer,Monomial> it: pol.getMonomials().entrySet()) {
             if(it != null) {
-                Monomial integrated = new Monomial(it.getValue().getCoefficient().doubleValue() / ( it.getValue().getDegree().doubleValue()+1), it.getKey() + 1);
+                BigDecimal dividend = BigDecimal.valueOf(it.getValue().getCoefficient().doubleValue());
+                BigDecimal divisor = BigDecimal.valueOf(it.getValue().getDegree().doubleValue()+1);
+                BigDecimal coef = dividend.divide(divisor,3,RoundingMode.HALF_EVEN);
+                Monomial integrated = new Monomial(coef.doubleValue(), it.getKey() + 1);
                 result.getMonomials().put(integrated.getDegree(), integrated);
                 //result.getMonomials().remove(integrated.getDegree()-1);
             }

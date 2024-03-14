@@ -1,8 +1,6 @@
 package model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Polynomial implements Cloneable{
     TreeMap<Integer, Monomial> monomials;
@@ -42,5 +40,13 @@ public class Polynomial implements Cloneable{
     public String toString() {
         return "Polynomial{" +
                 "monomials=" + monomials;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Polynomial that = (Polynomial) o;
+        return Objects.equals(monomials, that.monomials);
     }
 }
