@@ -3,10 +3,14 @@ package logic;
 import model.Monomial;
 import model.Polynomial;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import static java.lang.Math.abs;
 
 public class PolynomialConverter {
 
@@ -83,9 +87,22 @@ public class PolynomialConverter {
         for(Map.Entry<Integer, Monomial> it: pol.getMonomials().descendingMap().entrySet()){
             if(it.getValue().getCoefficient().doubleValue() != 0){
                 if(it.getValue().getCoefficient().doubleValue() < 0.0)
-                    polynomial.append("- ");
-                else polynomial.append("+ ");
-                polynomial.append(String.valueOf(it.getValue().getCoefficient()));
+                    polynomial.append(" ");
+                else if(!polynomial.isEmpty())
+                    polynomial.append("+ ");
+                if(it.getValue().getCoefficient().doubleValue() != 1.0){
+                    if(it.getValue().getCoefficient().doubleValue() == -1.0)
+                        polynomial.append("-");
+                    else {
+                        if(it.getValue().getCoefficient().doubleValue() == it.getValue().getCoefficient().intValue())
+                            polynomial.append(String.valueOf(it.getValue().getCoefficient().intValue()));
+                        else {
+                            BigDecimal coef = new BigDecimal(it.getValue().getCoefficient().doubleValue());
+                            polynomial.append(String.valueOf(coef.setScale(3, RoundingMode.HALF_EVEN)));
+                        }
+                    }
+                }
+
             }
             if(it.getKey() == 1 )
                 polynomial.append("x");

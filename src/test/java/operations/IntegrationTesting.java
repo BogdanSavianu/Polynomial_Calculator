@@ -46,9 +46,9 @@ public class IntegrationTesting {
         Polynomial result = op.integrate(polynomial);
 
         Polynomial expectedResult = new Polynomial();
-        Monomial i1 = new Monomial(0.6, 5); // 0.6x^5
-        Monomial i2 = new Monomial(-0.667, 3); // -0.6667x^3
-        Monomial i3 = new Monomial(2.5, 2); // 2.5x^2
+        Monomial i1 = new Monomial(0.6, 5);
+        Monomial i2 = new Monomial(-0.667, 3);
+        Monomial i3 = new Monomial(2.5, 2);
         expectedResult.addMonomial(i1);
         expectedResult.addMonomial(i2);
         expectedResult.addMonomial(i3);

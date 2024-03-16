@@ -120,7 +120,6 @@ public class DivisionTesting {
         List<Polynomial> expectedResult = new ArrayList<>();
         expectedResult.add(quotient);
         expectedResult.add(remainder);
-
         assertEquals(expectedResult, result);
         nrTestsPassed++;
     }
