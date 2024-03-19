@@ -2,7 +2,7 @@ package model;
 
 import java.util.*;
 
-public class Polynomial implements Cloneable{
+public class Polynomial {
     TreeMap<Integer, Monomial> monomials;
 
     public Polynomial() {
@@ -24,17 +24,6 @@ public class Polynomial implements Cloneable{
         else if(monomialToAdd != null && newMonomial == null)
             newMonomial = monomialToAdd;
         this.monomials.put(monomialToAdd.getDegree(), newMonomial);
-    }
-    public static TreeMap<Integer, Monomial> deepCloneMonomials(TreeMap<Integer, Monomial> monomials) {
-        TreeMap<Integer, Monomial> clonedMonomials = new TreeMap<>();
-        for (Map.Entry<Integer, Monomial> entry : monomials.entrySet()) {
-            clonedMonomials.put(entry.getKey(), entry.getValue().clone());
-        }
-        return clonedMonomials;
-    }
-
-    @Override public Polynomial clone() throws CloneNotSupportedException {
-        return (Polynomial) super.clone();
     }
     @Override
     public String toString() {

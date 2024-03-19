@@ -16,6 +16,7 @@ public class View extends JFrame {
     private JPanel resultPanel;
     private JLabel resultLabel;
     private JLabel resultValueLabel;
+    private JLabel errorMessageLabel;
 
     Controller controller = new Controller(this);
 
@@ -38,9 +39,11 @@ public class View extends JFrame {
         this.resultPanel.setLayout(new GridLayout(1,1));
         this.resultLabel = new JLabel("Result", JLabel.CENTER);
         this.resultValueLabel = new JLabel("", JLabel.CENTER);
+        this.errorMessageLabel = new JLabel("", JLabel.CENTER);
         this.resultPanel.add(this.resultLabel);
         this.resultPanel.add(this.resultValueLabel);
         this.contentPane.add(this.resultPanel);
+        this.resultPanel.add(this.errorMessageLabel);
     }
 
     private void prepareNumbersPanel() {
@@ -65,6 +68,11 @@ public class View extends JFrame {
         this.numbersPanel.add(this.computeButton);
         this.contentPane.add(this.numbersPanel);
     }
+
+    public void setErrorMessage(String message) {
+        errorMessageLabel.setText(message);
+    }
+
 
     public JTextField getFirstNumberTextField() {
         return firstNumberTextField;

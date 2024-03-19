@@ -9,18 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static model.Polynomial.deepCloneMonomials;
 
 public class OperationsImplementation implements Operations {
     @Override
     public Polynomial add(Polynomial pol1, Polynomial pol2) {
         Polynomial result = pol2;
-//        try {
-//            result = pol2.clone();
-//            result.setMonomials(deepCloneMonomials(pol2.getMonomials()));
-//        } catch (CloneNotSupportedException e) {
-//            throw new RuntimeException(e);
-//        }
         for(Map.Entry<Integer, Monomial> it: pol1.getMonomials().entrySet())
             if(it != null) {
                 result.addMonomial(it.getValue());
@@ -34,12 +27,6 @@ public class OperationsImplementation implements Operations {
     public Polynomial subtract(Polynomial pol1, Polynomial pol2) {
         Double inverse = -1.0;
         Polynomial result = pol1;
-//        try {
-//            result = pol1.clone();
-//            result.setMonomials(deepCloneMonomials(pol1.getMonomials()));
-//        } catch (CloneNotSupportedException e) {
-//            throw new RuntimeException(e);
-//        }
         for(Map.Entry<Integer, Monomial> it: pol2.getMonomials().entrySet())
             if(it != null) {
                 result.addMonomial(new Monomial(it.getValue().getCoefficient().doubleValue() * inverse, it.getKey()));
@@ -71,15 +58,8 @@ public class OperationsImplementation implements Operations {
         if(pol2.getMonomials().isEmpty()) {
             throw new DivisionByZero("Cannot divide by 0");
         }
-        Polynomial remainder, q;
+        Polynomial remainder = pol1, q = new Polynomial();
         List<Polynomial> list = new ArrayList<>();
-        try {
-            q= new Polynomial();
-            remainder = pol1.clone();
-            remainder.setMonomials(deepCloneMonomials(pol1.getMonomials()));
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
 
         while(!remainder.getMonomials().isEmpty() && degree(remainder).compareTo(degree(pol2))>=0) {
             Monomial t = new Monomial(lead(remainder).getCoefficient().doubleValue() / lead(pol2).getCoefficient().doubleValue(),lead(remainder).getDegree() - lead(pol2).getDegree());

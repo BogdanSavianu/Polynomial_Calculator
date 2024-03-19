@@ -2,7 +2,7 @@ package model;
 
 import java.util.Objects;
 
-public class Monomial implements Cloneable{
+public class Monomial{
     private Number coefficient;
     private Integer degree;
 
@@ -25,13 +25,6 @@ public class Monomial implements Cloneable{
 
     public void setDegree(Integer degree) {
         this.degree = degree;
-    }
-    @Override public Monomial clone(){
-        try {
-            return (Monomial) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
     }
     @Override
     public String toString() {

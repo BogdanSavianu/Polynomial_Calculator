@@ -44,7 +44,7 @@ public class PolynomialConverter {
         monomial = monomial.replaceAll("\\s+", "");
 
 
-        ///TODO maybe without this, the previous todo can be deleted
+        ///TODO maybe without these 2 lines, the previous todo can be deleted
         if (monomial.isEmpty()) {
             return new Monomial(0.0, 0);
         }
@@ -93,6 +93,18 @@ public class PolynomialConverter {
                 if(it.getValue().getCoefficient().doubleValue() != 1.0){
                     if(it.getValue().getCoefficient().doubleValue() == -1.0)
                         polynomial.append("-");
+                    else {
+                        if(it.getValue().getCoefficient().doubleValue() == it.getValue().getCoefficient().intValue())
+                            polynomial.append(String.valueOf(it.getValue().getCoefficient().intValue()));
+                        else {
+                            BigDecimal coef = new BigDecimal(it.getValue().getCoefficient().doubleValue());
+                            polynomial.append(String.valueOf(coef.setScale(3, RoundingMode.HALF_EVEN)));
+                        }
+                    }
+                }
+                if(it.getKey() == 0 && abs(it.getValue().getCoefficient().doubleValue())==1.0){
+                    if(it.getValue().getCoefficient().doubleValue() == -1.0)
+                        polynomial.append("1");
                     else {
                         if(it.getValue().getCoefficient().doubleValue() == it.getValue().getCoefficient().intValue())
                             polynomial.append(String.valueOf(it.getValue().getCoefficient().intValue()));
