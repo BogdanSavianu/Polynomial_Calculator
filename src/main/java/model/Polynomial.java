@@ -1,10 +1,8 @@
 package model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
-public class Polynomial implements Cloneable{
+public class Polynomial {
     TreeMap<Integer, Monomial> monomials;
 
     public Polynomial() {
@@ -27,20 +25,22 @@ public class Polynomial implements Cloneable{
             newMonomial = monomialToAdd;
         this.monomials.put(monomialToAdd.getDegree(), newMonomial);
     }
-    public static TreeMap<Integer, Monomial> deepCloneMonomials(TreeMap<Integer, Monomial> monomials) {
-        TreeMap<Integer, Monomial> clonedMonomials = new TreeMap<>();
-        for (Map.Entry<Integer, Monomial> entry : monomials.entrySet()) {
-            clonedMonomials.put(entry.getKey(), entry.getValue().clone());
-        }
-        return clonedMonomials;
-    }
-
-    @Override public Polynomial clone() throws CloneNotSupportedException {
-        return (Polynomial) super.clone();
-    }
     @Override
     public String toString() {
         return "Polynomial{" +
                 "monomials=" + monomials;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Polynomial that = (Polynomial) o;
+        return Objects.equals(monomials, that.monomials);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(monomials);
     }
 }
