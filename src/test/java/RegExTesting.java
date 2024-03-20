@@ -31,7 +31,8 @@ public class RegExTesting {
     @Test
     public void test1(){
         String expression = "x^4 + 3x^3 - 20x^2 + 3x + 5";
-        Polynomial result = polynomialConverter.parsePolynomial(expression.trim());
+        expression = expression.replace(" ", "");
+        Polynomial result = polynomialConverter.parse(expression);
         Polynomial check = new Polynomial();
         Monomial m1 = new Monomial(1.0,4);
         Monomial m2 = new Monomial(3.0, 3);
@@ -51,7 +52,8 @@ public class RegExTesting {
     @Test
     public void test2(){
         String expression = "-x^5 + x^3 + 5x^2 + 10x - 5";
-        Polynomial result = polynomialConverter.parsePolynomial(expression.trim());
+        expression = expression.replace(" ", "");
+        Polynomial result = polynomialConverter.parse(expression);
         Polynomial check = new Polynomial();
         Monomial m1 = new Monomial(-1.0,5);
         Monomial m2 = new Monomial(1.0, 3);
@@ -71,7 +73,8 @@ public class RegExTesting {
     @Test
     public void test3(){
         String expression = "4.99x^10 - 99x^3 + 73";
-        Polynomial result = polynomialConverter.parsePolynomial(expression.trim());
+        expression = expression.replace(" ", "");
+        Polynomial result = polynomialConverter.parse(expression);
         Polynomial check = new Polynomial();
         Monomial m1 = new Monomial(4.99,10);
         Monomial m2 = new Monomial(-99.0, 3);
@@ -86,7 +89,8 @@ public class RegExTesting {
     @Test
     public void test4(){
         String expression = "x^4 + 3x^3 - x^2 + 3x + 5";
-        Polynomial result = polynomialConverter.parsePolynomial(expression.trim());
+        expression = expression.replace(" ", "");
+        Polynomial result = polynomialConverter.parse(expression);
         Polynomial check = new Polynomial();
         Monomial m1 = new Monomial(1.0,4);
         Monomial m2 = new Monomial(3.0, 3);
@@ -106,7 +110,8 @@ public class RegExTesting {
     @Test
     public void test5(){
         String expression = "- x^101 + 3x^3";
-        Polynomial result = polynomialConverter.parsePolynomial(expression.trim());
+        expression = expression.replace(" ", "");
+        Polynomial result = polynomialConverter.parse(expression);
         Polynomial check = new Polynomial();
         Monomial m1 = new Monomial(-1.0,101);
         Monomial m2 = new Monomial(3.0, 3);

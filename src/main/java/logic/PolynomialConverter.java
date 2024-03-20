@@ -5,80 +5,57 @@ import model.Polynomial;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
 import static java.lang.Math.abs;
 
 public class PolynomialConverter {
 
-    public static Polynomial parsePolynomial(String expression) {
-        TreeMap<Integer, Monomial> polynomialMap = new TreeMap<>();
+    public static Polynomial parse(String expression){
         Polynomial result = new Polynomial();
-
-        String[] monomials = expression.split("\\s*(?=[+-])");
-
-        for (String monomial : monomials) {
-            Monomial parsedMonomial = parseMonomial(monomial);
-            polynomialMap.put(parsedMonomial.getDegree(), parsedMonomial);
+        expression = expression.toLowerCase();
+        if(expression.contains("^^"))
+            throw new NumberFormatException();
+        for(int i = 0; i<expression.length(); i++) {
+            String c = expression.substring(i,i+1);
+            if("qwertyuiopasdfghjklzcvbnm".contains(c))
+                throw new NumberFormatException();
         }
+        final String regex = "([+-?]*\\d*)x*\\^?(\\d*)";
 
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(expression);
 
-        ///TODO check if the following is actually necessary
-        List<Integer> toDelete = new ArrayList<>();
-        for(Map.Entry<Integer,Monomial> it: polynomialMap.entrySet())
-            if(it.getValue().getCoefficient().doubleValue() == 0.0)
-                toDelete.add(it.getKey());
-        for(Integer it: toDelete)
-            polynomialMap.remove(it);
-        result.setMonomials(polynomialMap);
+        while (matcher.find()) {
+            if(matcher.group().isEmpty())
+                break;
+            String coefString = matcher.group(1);
+            String degString = matcher.group(2);
+            Double coefficient;
+            Integer degree;
+            if(coefString.isEmpty())
+                coefficient = 1.0;
+            else if(coefString.equals("-"))
+                coefficient = -1.0;
+            else if(coefString.equals("+"))
+                coefficient = 1.0;
+            else coefficient = parseDouble(coefString);
+
+            if(matcher.group(0).contains("x")) {
+                if (degString.isEmpty())
+                    degree = 1;
+                else degree = parseInt(degString);
+            }
+            else degree = 0;
+            Monomial monomial = new Monomial(coefficient, degree);
+            if(coefficient!=0.0)
+                result.addMonomial(monomial);
+        }
         return result;
-    }
-
-    public static Monomial parseMonomial(String monomial) {
-        double coefficient = 0.0;
-        int degree = 0;
-
-        monomial = monomial.replaceAll("\\s+", "");
-
-
-        ///TODO maybe without these 2 lines, the previous todo can be deleted
-        if (monomial.isEmpty()) {
-            return new Monomial(0.0, 0);
-        }
-
-        char sign = '+';
-        if (monomial.charAt(0) == '+' || monomial.charAt(0) == '-') {
-            sign = monomial.charAt(0);
-            monomial = monomial.substring(1);
-        }
-
-        String[] parts = monomial.split("x", 2);
-
-        if (parts.length == 0) {
-            return new Monomial(0.0, 0);
-        } else if (parts.length == 1) {
-            if (!parts[0].isEmpty()) {
-                coefficient = Double.parseDouble(sign + parts[0]);
-            } else {
-                coefficient = (sign == '+') ? 1.0 : -1.0;
-            }
-        } else {
-            if (!parts[0].isEmpty()) {
-                coefficient = Double.parseDouble(sign + parts[0]);
-            } else {
-                coefficient = (sign == '+') ? 1.0 : -1.0;
-            }
-            String term = parts[1];
-            if (term.isEmpty()) {
-                degree = 1;
-            } else {
-                degree = Integer.parseInt(term.substring(1));
-            }
-        }
-        return new Monomial(coefficient, degree);
     }
 
     public static String printPolynomial(Polynomial pol){
