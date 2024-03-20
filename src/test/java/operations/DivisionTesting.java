@@ -152,6 +152,7 @@ public class DivisionTesting {
         Polynomial pol1 = new Polynomial();
         Polynomial pol2 = new Polynomial();
         pol1.addMonomial(mon4);
+        nrTestsPassed++;
         List<Polynomial> result = op.divide(pol1, pol2);
 
         Polynomial quotient = new Polynomial();
@@ -160,6 +161,6 @@ public class DivisionTesting {
         List<Polynomial> expectedResult = new ArrayList<>();
         expectedResult.add(quotient);
         expectedResult.add(remainder);
-        nrTestsPassed++;
+
     }
 }

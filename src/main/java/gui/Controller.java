@@ -2,6 +2,7 @@ package gui;
 
 import logic.DivisionByZero;
 import logic.Operations;
+import model.Monomial;
 import model.Polynomial;
 import single_point_access.SinglePointAccess;
 
@@ -11,8 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static logic.PolynomialConverter.parsePolynomial;
-import static logic.PolynomialConverter.printPolynomial;
+import static logic.PolynomialConverter.*;
 
 public class Controller implements ActionListener {
 
@@ -30,8 +30,8 @@ public class Controller implements ActionListener {
             Polynomial pol1;
             Polynomial pol2;
             try {
-                pol1 = parsePolynomial(view.getFirstNumberTextField().getText());
-                pol2 = parsePolynomial(view.getSecondNumberTextField().getText());
+                pol1 = parse(view.getFirstNumberTextField().getText());
+                pol2 = parse(view.getSecondNumberTextField().getText());
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(view, "Invalid polynomial format. Please enter valid polynomials.");
                 return;
