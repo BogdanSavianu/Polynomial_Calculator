@@ -26,7 +26,7 @@ public class Controller implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if(command.equals("COMPUTE")){ // Use equals() for string comparison
+        if(command.equals("COMPUTE")){
             Polynomial pol1;
             Polynomial pol2;
             try {
@@ -67,10 +67,8 @@ public class Controller implements ActionListener {
                     view.getResultValueLabel().setText(printPolynomial(result) + " +C");
                 else
                     view.getResultValueLabel().setText(printPolynomial(result));
-                // Clear error message if no exception occurred
                 view.setErrorMessage("");
             } catch (DivisionByZero ex) {
-                // Display error message
                 view.setErrorMessage("Cannot divide by 0");
             }
         }
